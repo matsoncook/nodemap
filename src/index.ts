@@ -81,7 +81,7 @@ webServerInterface.makeAjaxCall('/api/get_route_list?id=AAA', (json:any)=>{
 
 
 
-var zoom = 4;
+var zoom = 1;
 // var tileSize = 256;
 // var lat90 = projectLat(tileSize,zoom);
 // var lon180_1 = projectLon(tileSize,zoom);
