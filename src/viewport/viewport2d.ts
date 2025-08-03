@@ -147,8 +147,8 @@ export class Viewport2d{
     {
         let x0 = this.canvasToViewPortX(0);
         let y0 = this.canvasToViewPortY(0);
-        let x1 = this.canvasToViewPortX(0);
-        let y1 = this.canvasToViewPortY(0);
+        let x1 = this.canvasToViewPortX(this._canvasBounds.sizeX);
+        let y1 = this.canvasToViewPortY(this._canvasBounds.sizeY);
         this.viewportCanvasBounds.setFromTo(x0,y0,x1,y1);
     }
 
