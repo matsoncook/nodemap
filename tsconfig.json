@@ -1,0 +1,13 @@
+{
+
+    "compilerOptions": {
+      "target": "ES5",
+      "module": "es6",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "./tsc_out"
+    },
+    "include": ["src/**/*"]
+  }

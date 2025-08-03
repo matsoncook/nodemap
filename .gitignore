@@ -1,0 +1,4 @@
+tsc_out
+node_modules
+dist
+static
