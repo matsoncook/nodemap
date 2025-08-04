@@ -14,6 +14,9 @@ import Util from "./util/Util";
 
 import { Viewport2d } from "./viewport/viewport2d";
 
+var zoom = 1;
+
+
 const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
 
@@ -21,7 +24,7 @@ var viewport = new Viewport2d();
 var mapProject = new MercatorWeb();
 var viewportMercator : MercatorViewport = new MercatorViewport(mapProject,viewport);
 
-var map = new OcsMap(canvas,ctx,viewport);
+var map = new OcsMap(canvas,ctx,viewportMercator);
 
 var resizer1 = new Resizer(canvas,ctx,viewport,()=>{
     map.draw();
@@ -81,7 +84,7 @@ webServerInterface.makeAjaxCall('/api/get_route_list?id=AAA', (json:any)=>{
 
 
 
-var zoom = 1;
+
 // var tileSize = 256;
 // var lat90 = projectLat(tileSize,zoom);
 // var lon180_1 = projectLon(tileSize,zoom);

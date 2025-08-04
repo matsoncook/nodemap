@@ -20,7 +20,7 @@ export class Bounds2d
         this._x = x0;
         this._y = y0;
         this._x1 = x1;
-        this._x1 = y1;
+        this._y1 = y1;
 
         this.setBounds(x1-x0,y1-y0);
     }

@@ -1,4 +1,5 @@
 import LatLon from "../map/LatLon";
+import MercatorViewport from "../map/MercatorViewport";
 import MercatorWeb from "../project/MercatorWeb";
 import Util from "../util/Util";
 import SubImage from "./SubImage";
@@ -7,17 +8,39 @@ export default class MapGrid
 {
     zoom = 1;
     grid : SubImage[][] = [[]];
-    mapProject = new MercatorWeb();
-    constructor()
+    mapProject : MercatorWeb;
+    constructor(private mercatorViewport : MercatorViewport)
     {
-
+        this.mapProject = mercatorViewport.mercatorWeb;
     }
-    //@deprecated - this should be in MercatorWeb
-   
+    calculateGrid()
+    {
+        this.mercatorViewport.viewport.calculateViewportCanvasBounds();
+
+        let b = this.mercatorViewport.viewport.viewportCanvasBounds;
+
+        let lonFrom = this.mercatorViewport.viewportToLonDeg(b.x);
+        //let latFrom = this.mercatorViewport.viewportToLatDeg(b.y);
+        let lonTo = this.mercatorViewport.viewportToLonDeg(b.x1);
+        
+        
+        var grid_count = Math.pow(2,this.zoom);
+        let tileXFrom = this.lonToTileX(lonFrom,this.zoom,grid_count,256);
+        let tileXTo = this.lonToTileX(lonTo,this.zoom,grid_count,256);
+        //let tileY = this.latToTileY(latFrom,this.zoom,grid_count,256);
+        console.log(`tileXFrom: ${tileXFrom}, tileXTo: ${tileXTo}`);
+        //console.log(`tileX: ${tileX}, tileY: ${tileY}`);
+
+        
+        
+    }  
 
     load(zoom : number,callback: (image:HTMLImageElement ) => void = () => { } )
     {
+        
         this.zoom = zoom;
+
+        this.calculateGrid()
 
         this.grid = [[]];
 
@@ -112,6 +135,32 @@ export default class MapGrid
         // var subImage11 = new SubImage(1,0,0,  new LatLon( -lon180,0),      new LatLon(lon360, -lat90),(image)=>{
         //     map.draw();
         // }).load();
+    }
+
+    latToTileY(lat: number,  zoom: number, grid_count: number, tileSize: number) {
+        
+        const py = this.mapProject.latDegToPixels(lat, zoom);
+
+
+        const factor_y = Math.floor(py / tileSize);
+
+
+        const y_count = factor_y + (grid_count / 2);
+
+        return y_count ;
+    }
+
+    lonToTileX(lon: number, zoom: number, grid_count: number, tileSize: number) {
+        const px = this.mapProject.lonDegToPixels(lon, zoom);
+
+
+        const factor_x = Math.floor(px / tileSize);
+
+
+        const x_count = factor_x + (grid_count / 2);
+
+
+        return x_count;
     }
 
     latLonToTileXY(lat: number, lon: number, zoom: number, grid_count: number, tileSize: number) {

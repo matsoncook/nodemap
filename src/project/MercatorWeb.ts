@@ -50,7 +50,7 @@ export default class MercatorWeb
     return meters / metersPerPixel;
   }
 
-  public  latToMeters(  lat: number )
+  public  latDegToMeters(  lat: number )
   {
 
     var shift = ( Util.toRadians( lat ) / 2.0 ) + ( Math.PI / 4.0 );
@@ -60,7 +60,7 @@ export default class MercatorWeb
 
   }
 
-  public  metersToLat(  meters: number )
+  public  metersToLatRad(  meters: number )
   {
     //  shift = Math.atan(Math.exp(meters/EARTH_RADIUS_METERS));
     // lat = 2*(shift - (Math.PI/4.0))
@@ -70,21 +70,21 @@ export default class MercatorWeb
   }
 
 
-  public  latToPixels(  latitude: number,  zoom: number )
+  public  latDegToPixels(  latitude: number,  zoom: number )
   {
-    var meters = this.latToMeters( latitude );
+    var meters = this.latDegToMeters( latitude );
     var pixels = this.metersToPixels( meters, zoom );
     return pixels;
   }
 
-  public   metersToLon(  meters: number )
+  public   metersToLonRad(  meters: number )
   {
     
     return (meters/this.circumference) * 2 * Math.PI;
   }
-  public   lonToPixels(  longitude: number,  zoom: number )
+  public   lonDegToPixels(  longitude: number,  zoom: number )
   {
-    var meters = this.lonToMeters( longitude );
+    var meters = this.lonDegToMeters( longitude );
     var pixels = this.metersToPixels( meters, zoom );
     return pixels;
   }
@@ -97,28 +97,28 @@ export default class MercatorWeb
   {
     return this.tileSize * Math.pow( 2, zoom );
   }
-  public   lonToMeters(  longitude: number )
+  public   lonDegToMeters(  longitude: number )
   {
 
     return longitude * MercatorWeb.METERS_PER_DEGREE ;
   }
-  public pixelsToLon(pixel : number,zoom: number) : number
+  public pixelsToLonRad(pixel : number,zoom: number) : number
   {
     const m = this.pixelsToMeters(pixel,zoom);
-    const lr = this.metersToLon(m);
+    const lr = this.metersToLonRad(m);
     return lr;
   }
-  public pixelsToLat(pixel : number,zoom: number) : number
+  public pixelsToLatRad(pixel : number,zoom: number) : number
   {
     const m = this.pixelsToMeters(pixel,zoom);
-    const lr = this.metersToLat(m);
+    const lr = this.metersToLatRad(m);
     return lr;
   }
 
    pixelsToLatDeg (pixel: number,zoom: number): number
     {
         var m = this.pixelsToMeters(pixel,zoom);
-        var lr = this.metersToLat(m);
+        var lr = this.metersToLatRad(m);
         var ld = Util.toDeg(lr);
         return ld;
     }
@@ -126,22 +126,11 @@ export default class MercatorWeb
     pixelsToLonDeg (pixel: number,zoom: number): number
     {
         var m = this.pixelsToMeters(pixel,zoom);
-        var lr = this.metersToLon(m);
+        var lr = this.metersToLonRad(m);
         var ld = Util.toDeg(lr);
         return ld;
     }
 
-    latDegToPixels(lat: number, zoom: number) :number {
-        let lr =  Util.toRad(lat);
-        let m = this.latToMeters(lr);
-        let px = this.metersPerPixel(zoom);
-        return px;
-    }
-    lonDegToPixels(lon: number, zoom: number) :number  {
-         let lr =  Util.toRad(lon);
-        let m = this.lonToMeters(lr);
-        let px = this.metersPerPixel(zoom);
-        return px;
-    }
+
   
 }

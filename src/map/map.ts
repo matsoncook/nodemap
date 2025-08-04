@@ -1,11 +1,10 @@
-import GeoJSONFeature from "../geojson/geojsonfeature"
+
 import MapGrid from "../mapimage/MapGrid";
-import MercatorWeb from "../project/MercatorWeb";
-import Route from "../route/Route";
+
 import RouteRenderer from "../route/RouteRenderer";
-import Util from "../util/Util";
+
 import { Point2d } from "../viewport/point2d";
-import { Viewport2d } from "../viewport/viewport2d";
+
 import Fixes from "./fixes";
 import LatLon from "./LatLon";
 import MercatorViewport from "./MercatorViewport";
@@ -15,16 +14,16 @@ export default class OcsMap{
 
     fixes = new Fixes();
     routeRendererList : RouteRenderer[] = [];
-    mapGrid : MapGrid = new MapGrid();
+    mapGrid : MapGrid; 
 
-    mapProject : MercatorWeb  = new MercatorWeb();
-    mercatorViewport : MercatorViewport  = new MercatorViewport(this.mapProject,this.viewport);
+    // mapProject : MercatorWeb;
+    // mercatorViewport : MercatorViewport  = new MercatorViewport(this.mapProject,this.viewport);
 
     constructor(private canvas: HTMLCanvasElement,
         private ctx: CanvasRenderingContext2D | null,
-        private viewport: Viewport2d)
+        private mercatorViewport : MercatorViewport)
     {
-
+        this.mapGrid = new MapGrid(mercatorViewport);
     }
     // transformLat(lat:number, base : number) : number
     // {
