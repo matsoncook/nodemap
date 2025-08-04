@@ -20,16 +20,23 @@ export default class MapGrid
         let b = this.mercatorViewport.viewport.viewportCanvasBounds;
 
         let lonFrom = this.mercatorViewport.viewportToLonDeg(b.x);
-        //let latFrom = this.mercatorViewport.viewportToLatDeg(b.y);
         let lonTo = this.mercatorViewport.viewportToLonDeg(b.x1);
+
+        let grid_count = Math.pow(2,this.zoom);
+        let latFrom = this.mercatorViewport.viewportToLatDeg(b.y) ?? 0;
+        let latTo = this.mercatorViewport.viewportToLatDeg(b.y) ?? grid_count;
         
         
-        var grid_count = Math.pow(2,this.zoom);
+
         let tileXFrom = this.lonToTileX(lonFrom,this.zoom,grid_count,256);
         let tileXTo = this.lonToTileX(lonTo,this.zoom,grid_count,256);
-        //let tileY = this.latToTileY(latFrom,this.zoom,grid_count,256);
+        
+        let tileYFrom = this.latToTileY(lonFrom,this.zoom,grid_count,256);
+        let tileYTo = this.latToTileY(lonTo,this.zoom,grid_count,256);
+
         console.log(`tileXFrom: ${tileXFrom}, tileXTo: ${tileXTo}`);
-        //console.log(`tileX: ${tileX}, tileY: ${tileY}`);
+        console.log(`tileYFrom: ${tileYFrom}, tileYTo: ${tileYTo}`);
+        console.log(`tm`);
 
         
         
@@ -78,30 +85,6 @@ export default class MapGrid
                     lonTo = 360;
                 }
 
-
-                //zoom = 3
-
-                // var factor_x = -(grid_count/2) + x_count;
-                // var factor_y = -(grid_count/2) + y_count;
-
-                // var latFrom = this.projectLat(tileSize * (factor_y),zoom);
-                // var latTo = this.projectLat(tileSize * (factor_y+1),zoom);
-                // var lonFrom = this.projectLon(tileSize* factor_x,zoom);
-                // var lonTo = this.projectLon(tileSize* (factor_x+1),zoom);
-                // if(x_count == 3)
-                // {
-                //     lonTo = 360;
-                // }
-
-                // works for zoom = 2
-                // var latFrom = this.projectLat(tileSize * (y_count-2),zoom);
-                // var latTo = this.projectLat(tileSize * (y_count-1),zoom);
-                // var lonFrom = this.projectLon(tileSize* factor_x,zoom);
-                // var lonTo = this.projectLon(tileSize* (factor_x+1),zoom);
-                // if(x_count == 1)
-                // {
-                //     lonTo = 360;
-                // }
 
                 console.log(`x_count: ${x_count}, factor_x: ${factor_x},lonFrom: ${lonFrom}, lonTo: ${lonTo}`);
 
