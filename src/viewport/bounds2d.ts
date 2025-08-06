@@ -85,4 +85,8 @@ export class Bounds2d
     public set y1(value: number) {
         this._y1 = value;
     }
+
+    toString(): string {
+        return `(x=${this._x}, y=${this._y}, sizeX=${this._sizeX}, sizeY=${this._sizeY})`;
+    }
 }

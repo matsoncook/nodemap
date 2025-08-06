@@ -6,11 +6,18 @@ import LatLon from "./LatLon";
 export default class MercatorViewport
 {
     
+    zoomMagnificationMultiplier  = 360.0/512.0;
     
     
-    constructor(private _mercatorWeb: MercatorWeb, private _viewport: Viewport2d)
+    constructor(private _mercatorWeb: MercatorWeb, private _viewport: Viewport2d, private _zoom: number)
     {
 
+    }
+
+    applyViewportMagnificationForZoom(zoom : number)
+    {
+        let mag = Math.pow(this.zoomMagnificationMultiplier, zoom);
+        this._viewport.viewPortCanvasMagnification.set2(mag-0.01,mag-0.01)
     }
 
     viewportToLatDeg(viewportY : number) :number
@@ -109,6 +116,11 @@ export default class MercatorViewport
     public set viewport(value: Viewport2d) {
         this._viewport = value;
     }
-
+    public get zoom(): number {
+        return this._zoom;
+    }
+    public set zoom(value: number) {
+        this._zoom = value;
+    }
     
 }

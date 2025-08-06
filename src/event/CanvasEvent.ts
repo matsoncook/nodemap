@@ -39,7 +39,10 @@ export default class CanvasEvent{
         
                 
                 this.viewport.setCanvasPositionOfViewportCenter(this.previousViewPortPosition,this.currentPosition);
+                // console.log()
  
+                console.log("this.viewport: " +this.viewport);
+
                 callback();
 
             },
@@ -54,7 +57,7 @@ export default class CanvasEvent{
 
         this.canvas.addEventListener('mousedown', (event: MouseEvent) => {
             isDragging = true;
-            console.log('Mouse down at', event.offsetX, event.offsetY);
+            //console.log('Mouse down at', event.offsetX, event.offsetY);
             drag.x = event.offsetX;
             drag.y = event.offsetY;
         });
@@ -69,9 +72,11 @@ export default class CanvasEvent{
 // End drag on mouse up
         this.canvas.addEventListener('mouseup', (event: MouseEvent) => {
             isDragging = false;
-            console.log('Mouse up - drag ended',(drag.x - event.offsetX),(drag.y - event.offsetY));
+            //console.log('Mouse up - drag ended',(drag.x - event.offsetX),(drag.y - event.offsetY));
             this.viewport.canvasPositionOfViewportCenter.x = this.viewport.canvasPositionOfViewportCenter.x - (drag.x - event.offsetX);
             this.viewport.canvasPositionOfViewportCenter.y = this.viewport.canvasPositionOfViewportCenter.y - (drag.y - event.offsetY);
+
+            console.log("this.viewport: " +this.viewport);
             //draw(fixes.fixList);
             callback();
         

@@ -35,6 +35,8 @@ export default class SubImage
         };
         this.imageName = `satellite${this.zoom.toString().padStart(2, "0")}-${this.x.toString().padStart(6, "0")}-${this.y.toString().padStart(6, "0")}.png`;
 
+        //console.log(`loading: ${this.x} ${this.y}`);
+
 
         this._anImage.src = this.imagePath + this.imageName;//texPath+"earth-"+x+"-"+y+".png"
 

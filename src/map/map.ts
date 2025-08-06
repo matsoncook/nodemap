@@ -169,25 +169,6 @@ export default class OcsMap{
                 this.mercatorViewport.latLonToViewport(subImage.latLonFrom, from);
                 this.mercatorViewport.latLonToViewport(subImage.latLonTo, to)
 
-                // var x_lon_f = subImage.latLonFrom.lon;
-                // var y_lat_f = subImage.latLonFrom.lat;
-        
-                // x_lon_f = this.transformLon(x_lon_f, 360);
-                // y_lat_f = this.transformLat(y_lat_f, 360);
-
-                // var pix_x =  this.mapProject.getLonToPixels(x_lon_f, 1);
-        
-                // var x_f = this.viewport.viewPortToCanvasX(x_lon_f);
-                // var y_f  = this.viewport.viewPortToCanvasY(y_lat_f);
-
-                // var x_lon_t = subImage.latLonTo.lon;
-                // var y_lat_t = subImage.latLonTo.lat;
-        
-                // x_lon_t = this.transformLon(x_lon_t, 360);
-                // y_lat_t = this.transformLat(y_lat_t, 360);
-        
-                // var x_t = this.viewport.viewPortToCanvasX(x_lon_t);
-                // var y_t  = this.viewport.viewPortToCanvasY(y_lat_t);
 
                 this.ctx?.drawImage(subImage.anImage,0,0, 256,256, from.x,from.y,(to.x - from.x)*1,(to.y - from.y)*1)
 

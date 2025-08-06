@@ -113,4 +113,8 @@ export class Point2d{
 	{
 		return Math.sqrt(this.dist2());
 	}
+
+	toString(): string {
+        return `Point(x=${this.x}, y=${this.y})`;
+    }
 }

@@ -28,12 +28,14 @@ export class Viewport2d{
     
 
     //This is bacically half of the canvas bounds
-    public canvasCenterPosition : Point2d = new Point2d();
+    //public canvasCenterPosition : Point2d = new Point2d();
 
     private _canvasBounds: Bounds2d = new Bounds2d();
 
 
     private _aspect: number = 1; // if y is bigger then this is less than .001 
+
+    private yTransform : number = -1;
     
 
     /*
@@ -146,9 +148,9 @@ export class Viewport2d{
     calculateViewportCanvasBounds()
     {
         let x0 = this.canvasToViewPortX(0);
-        let y0 = this.canvasToViewPortY(0);
+        let y0 = this.canvasToViewPortY(this._canvasBounds.sizeY);
         let x1 = this.canvasToViewPortX(this._canvasBounds.sizeX);
-        let y1 = this.canvasToViewPortY(this._canvasBounds.sizeY);
+        let y1 = this.canvasToViewPortY(0);
         this.viewportCanvasBounds.setFromTo(x0,y0,x1,y1);
     }
 
@@ -175,6 +177,10 @@ export class Viewport2d{
         var vpcy = canvasY + (viewPortY / this.viewPortCanvasMagnification.y);
         //console.log("newViewportCenterY",this._canvasPositionOfViewportCenter.y,prev,vpcy)
         return vpcy;
+    }
+
+    toString(): string {
+        return `_canvasBounds:${this._canvasBounds}, _viewPortCanvasMagnification:${this._viewPortCanvasMagnification}, _canvasPositionOfViewportCenter:${this._canvasPositionOfViewportCenter})`;
     }
 
 
