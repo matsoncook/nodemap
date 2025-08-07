@@ -12,10 +12,13 @@ import RouteRenderer from "./route/RouteRenderer";
 import WebServerInterface from "./server/webserverinterface";
 import LatLonConverter from "./util/LatLonConverter";
 import Util from "./util/Util";
+import { Point2d } from "./viewport/point2d";
 
 import { Viewport2d } from "./viewport/viewport2d";
 
 var zoom = 2;
+
+var mercatorViewportPixel = 360/512;
 
 //Tests
 // let testMapProject = new MercatorWeb();
@@ -30,14 +33,18 @@ const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
 
 var viewport = new Viewport2d();
-// viewport.canvasPositionOfViewportCenter.set2(0, 256)
-// viewport.viewPortCanvasMagnification.set2(1,1);
+var mapProject = new MercatorWeb();
+var viewportMercator : MercatorViewport = new MercatorViewport(mapProject,viewport,zoom);
 
-viewport.canvasPositionOfViewportCenter.set2(-256, 256)
-viewport.viewPortCanvasMagnification.set2(0.5,0.5);
 
-viewport.canvasPositionOfViewportCenter.set2(-(256+512), 256)
-viewport.viewPortCanvasMagnification.set2(0.25,0.25);
+
+viewportMercator.applyViewportMagnificationForZoom(zoom);
+
+
+
+var viewportPosition = new Point2d(180 / mercatorViewportPixel,0);
+var canvasPosition = new Point2d(256,256);
+viewport.setCanvasPositionOfViewportCenter(viewportPosition,canvasPosition);
 
 //this.viewport: _canvasBounds:(x=0, y=0, sizeX=512, sizeY=512), _viewPortCanvasMagnification:Point(x=0.4018775720164611, y=0.4018775720164611), _canvasPositionOfViewportCenter:Point(x=-388.4424746666666, y=254.3598826666668))
 
@@ -51,8 +58,6 @@ viewport.viewPortCanvasMagnification.set2(0.25,0.25);
 
 
 
-var mapProject = new MercatorWeb();
-var viewportMercator : MercatorViewport = new MercatorViewport(mapProject,viewport,zoom);
 
 //viewportMercator.applyViewportMagnificationForZoom(zoom);
 
@@ -63,8 +68,14 @@ var resizer1 = new Resizer(canvas,ctx,viewport,()=>{
 });
 
 
-var canvasEvent = new CanvasEvent(canvas,viewport);
-canvasEvent.addWheelEvent(()=>{ map.draw();})
+var canvasEvent = new CanvasEvent(canvas,viewportMercator);
+canvasEvent.addWheelEvent(()=>{ 
+    map.mapGrid.loadAll(viewportMercator.zoom,(image)=>{
+        map.draw();
+    });
+    map.draw();
+
+})
 canvasEvent.addDraggingEvent(()=>{ map.draw();})
 
 

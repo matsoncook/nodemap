@@ -167,10 +167,17 @@ export default class OcsMap{
 
                 
                 this.mercatorViewport.latLonToViewport(subImage.latLonFrom, from);
-                this.mercatorViewport.latLonToViewport(subImage.latLonTo, to)
+                this.mercatorViewport.latLonToViewport(subImage.latLonTo, to);
 
 
-                this.ctx?.drawImage(subImage.anImage,0,0, 256,256, from.x,from.y,(to.x - from.x)*1,(to.y - from.y)*1)
+                this.ctx?.drawImage(subImage.anImage,0,0, 256,256, from.x,from.y,(to.x - from.x)*1,(to.y - from.y)*1);
+                if ( this.ctx)
+                {
+
+                    this.ctx.lineWidth = 5;
+                    this.ctx.strokeStyle = "#ffffff";
+                }
+                this.ctx?.strokeRect(from.x,from.y,(to.x - from.x)*1,(to.y - from.y)*1);
 
             }
         }

@@ -16,8 +16,9 @@ export default class MercatorViewport
 
     applyViewportMagnificationForZoom(zoom : number)
     {
-        let mag = Math.pow(this.zoomMagnificationMultiplier, zoom);
-        this._viewport.viewPortCanvasMagnification.set2(mag-0.01,mag-0.01)
+        //let mag = Math.pow(this.zoomMagnificationMultiplier, zoom);
+        let mag = 1/Math.pow(2, zoom-1)
+        this._viewport.viewPortCanvasMagnification.set2(mag,mag)
     }
 
     viewportToLatDeg(viewportY : number) :number
@@ -64,45 +65,45 @@ export default class MercatorViewport
         point.y = y_f;
     }
 
-    optimalZoomForMagnification(viewportMagnification: number): number {
-        const metersPerPixel = 1.0 / viewportMagnification;
-        const zoom = Math.log2(
-            MercatorWeb.EARTH_CIRCUMFERENCE_METERS /
-            MercatorWeb.TILE_SIZE /
-            metersPerPixel
-        );
-        return Math.floor(zoom); // use Math.round for closest match
-    }
+    // optimalZoomForMagnification(viewportMagnification: number): number {
+    //     const metersPerPixel = 1.0 / viewportMagnification;
+    //     const zoom = Math.log2(
+    //         MercatorWeb.EARTH_CIRCUMFERENCE_METERS /
+    //         MercatorWeb.TILE_SIZE /
+    //         metersPerPixel
+    //     );
+    //     return Math.floor(zoom); // use Math.round for closest match
+    // }
 
-    zoomToViewportMagnification(zoom : number) : number
-    {
-        return MercatorWeb.TILE_SIZE  / 360 * Math.pow(2,zoom);
-    }
-    viewportMagnificationToZoom(viewportMagnification : number) : number
-    {
-        const zoom = Math.log2(viewportMagnification * 360 / MercatorWeb.TILE_SIZE);
-        return zoom;
-    }
+    // zoomToViewportMagnification(zoom : number) : number
+    // {
+    //     return MercatorWeb.TILE_SIZE  / 360 * Math.pow(2,zoom);
+    // }
+    // viewportMagnificationToZoom(viewportMagnification : number) : number
+    // {
+    //     const zoom = Math.log2(viewportMagnification * 360 / MercatorWeb.TILE_SIZE);
+    //     return zoom;
+    // }
 
-    tileRangeForZoomX(zoom : number) : [number,number]
-    {
-        //where is the LatLon(0,0)
-        const cx = 0;//this.viewport.canvasPositionOfViewportCenterX;
-        const mag = this._viewport.viewPortCanvasMagnification.x;
-        const centerLon : number = 0; 
-        return [0,0]  
-    }
+    // tileRangeForZoomX(zoom : number) : [number,number]
+    // {
+    //     //where is the LatLon(0,0)
+    //     const cx = 0;//this.viewport.canvasPositionOfViewportCenterX;
+    //     const mag = this._viewport.viewPortCanvasMagnification.x;
+    //     const centerLon : number = 0; 
+    //     return [0,0]  
+    // }
 
-    bounds()
-    {
-        this._viewport.calculateViewportCanvasBounds();
-        let lonFrom = this._viewport.viewportCanvasBounds.x;
-        let lonTo = this._viewport.viewportCanvasBounds.x1;
-        let latFrom = this._viewport.viewportCanvasBounds.y;
-        let latTo = this._viewport.viewportCanvasBounds.y1;
+    // bounds()
+    // {
+    //     this._viewport.calculateViewportCanvasBounds();
+    //     let lonFrom = this._viewport.viewportCanvasBounds.x;
+    //     let lonTo = this._viewport.viewportCanvasBounds.x1;
+    //     let latFrom = this._viewport.viewportCanvasBounds.y;
+    //     let latTo = this._viewport.viewportCanvasBounds.y1;
 
         
-    }
+    // }
     public get mercatorWeb(): MercatorWeb {
         return this._mercatorWeb;
     }

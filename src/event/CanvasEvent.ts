@@ -1,16 +1,18 @@
+import MercatorViewport from "../map/MercatorViewport";
 import { Point2d } from "../viewport/point2d";
 import { Viewport2d } from "../viewport/viewport2d";
 
 export default class CanvasEvent{
 
-    currentPosition = new Point2d();
+    currentCanvasPosition = new Point2d();
     previousViewPortPosition = new Point2d();
+    viewport : Viewport2d;
 
     constructor(private canvas: HTMLCanvasElement,
-        private viewport: Viewport2d
+        private mercatorViewport: MercatorViewport
     )
     {
-
+        this.viewport = mercatorViewport.viewport;
     }
     addWheelEvent(callback: () => void = () => { })
     {
@@ -21,24 +23,28 @@ export default class CanvasEvent{
         
                 const delta = event.deltaY;
         
-
-                this.currentPosition.set2(event.offsetX,event.offsetY);
-                this.viewport.canvasToViewPort(this.currentPosition,this.previousViewPortPosition);
-
+                //This setup the viewport magic
+                this.currentCanvasPosition.set2(event.offsetX,event.offsetY);
+                this.viewport.canvasToViewPort(this.currentCanvasPosition,this.previousViewPortPosition);
+                //---
+                
                 var dir = 1;
                 if (delta < 0) {
-
-
-
-                    this.viewport.viewPortCanvasMagnification.scale((dir + 0.2));
-                } else {
-
                     this.viewport.viewPortCanvasMagnification.scale(1/(dir + 0.2));
-                   
+                } else {
+                    this.viewport.viewPortCanvasMagnification.scale((dir + 0.2));       
                 }
-        
+                if (delta < 0) {
+                    this.mercatorViewport.zoom += 1;
+                }
+                else{
+                    this.mercatorViewport.zoom -= 1;
+                }
+
+                this.mercatorViewport.applyViewportMagnificationForZoom(this.mercatorViewport.zoom);
                 
-                this.viewport.setCanvasPositionOfViewportCenter(this.previousViewPortPosition,this.currentPosition);
+                //This does the viewport magic
+                this.viewport.setCanvasPositionOfViewportCenter(this.previousViewPortPosition,this.currentCanvasPosition);
                 // console.log()
  
                 console.log("this.viewport: " +this.viewport);
