@@ -4,6 +4,7 @@ import MercatorWeb from "../project/MercatorWeb";
 import Util from "../util/Util";
 import GridCalculator from "./GridCalculator";
 import SubImage from "./SubImage";
+import TileBounds from "./TileBounds";
 
 export default class MapGrid
 {
@@ -57,7 +58,7 @@ export default class MapGrid
     {
         this.zoom = zoom;
 
-        let bounds : any = this.gridCalculator.calculateGrid();
+        let boundsArr : TileBounds[] = this.gridCalculator.calculateGrid();
 
         this.grid = [[]];
 
@@ -68,30 +69,34 @@ export default class MapGrid
 
         var xx = grid_count - 1;
         
-        for(var x_count = bounds.x0; x_count <=  bounds.x1 ; x_count++)
+        for(var bounds of boundsArr)
         {
-            let x = x_count;
-            if(x_count < 0  )
-            {
-                //x = x_count % grid_count;
-                continue;
-            }
-            if(x_count > (grid_count - 1) )
-            {
-                continue;
-            }
-            for(var y_count = bounds.y0; y_count <= bounds.y1; y_count++)
-            
-            {
-                if(y_count < 0 
-                    || y_count > (grid_count - 1) )
+            for(var x_count = bounds.x0; x_count <=  bounds.x1 ; x_count++)
                 {
-                    continue;
+                    let x = x_count;
+                    if(x_count < 0  )
+                    {
+                        //x = x_count % grid_count;
+                        continue;
+                    }
+                    if(x_count > (grid_count - 1) )
+                    {
+                        continue;
+                    }
+                    for(var y_count = bounds.y0; y_count <= bounds.y1; y_count++)
+                    
+                    {
+                        if(y_count < 0 
+                            || y_count > (grid_count - 1) )
+                        {
+                            continue;
+                        }
+        
+                        this.loadTile(zoom , x, y_count, callback );
+                    }
                 }
-
-                this.loadTile(zoom , x, y_count, callback );
-            }
         }
+        
     }  
 
     loadAll(zoom : number,callback: (image:HTMLImageElement ) => void = () => { } )

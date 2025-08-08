@@ -20,12 +20,10 @@ var zoom = 2;
 
 var mercatorViewportPixel = 360/512;
 
-//Tests
-// let testMapProject = new MercatorWeb();
-// let testViewport = new Viewport2d();
-// let testViewportMercator : MercatorViewport = new MercatorViewport(testMapProject,testViewport);
-// //testViewportMercator.applyViewportMagnificationForZoom(zoom);
-// let gc = new GridCalculator(testViewportMercator);
+doTests();
+doTest1();
+
+
 
 
 
@@ -39,10 +37,10 @@ var viewportMercator : MercatorViewport = new MercatorViewport(mapProject,viewpo
 
 
 viewportMercator.applyViewportMagnificationForZoom(zoom);
+viewport.viewPortCanvasMagnification.scale(0.9);
 
 
-
-var viewportPosition = new Point2d(180 / mercatorViewportPixel,0);
+let viewportPosition = new Point2d(180 / mercatorViewportPixel,0);
 var canvasPosition = new Point2d(256,256);
 viewport.setCanvasPositionOfViewportCenter(viewportPosition,canvasPosition);
 
@@ -70,7 +68,7 @@ var resizer1 = new Resizer(canvas,ctx,viewport,()=>{
 
 var canvasEvent = new CanvasEvent(canvas,viewportMercator);
 canvasEvent.addWheelEvent(()=>{ 
-    map.mapGrid.loadAll(viewportMercator.zoom,(image)=>{
+    map.mapGrid.load1(viewportMercator.zoom,(image)=>{
         map.draw();
     });
     map.draw();
@@ -113,9 +111,58 @@ webServerInterface.makeAjaxCall('/api/get_route_list?id=AAA', (json:any)=>{
 
 
 
-map.mapGrid.loadAll(zoom,(image)=>{
+map.mapGrid.load1(zoom,(image)=>{
     map.draw();
 });
+
+
+function doTests() : MercatorViewport
+{
+    //TestsdoTest1()
+    let testZoom = 2;
+    let testMapProject = new MercatorWeb();
+    let testViewport = new Viewport2d();
+    let testViewportMercator : MercatorViewport = new MercatorViewport(testMapProject,testViewport,testZoom);
+    testViewport.canvasBounds.setBounds(512,512);
+    testViewportMercator.applyViewportMagnificationForZoom(testZoom);
+    testViewport.viewPortCanvasMagnification.scale(0.95);
+
+    let viewportPosition = new Point2d(180 / mercatorViewportPixel,0);
+    var canvasPosition = new Point2d(256,256);
+    testViewport.setCanvasPositionOfViewportCenter(viewportPosition,canvasPosition);
+    
+    
+
+    let gc = new GridCalculator(testViewportMercator);
+    let tileBounds = gc.calculateGrid();
+    return testViewportMercator;
+}
+
+function doTest1()
+{
+    // let mapProject = new MercatorWeb();
+    // var lat = mapProject.pixelsToLatDeg(128,zoom);
+    // console.log("z2 lat at 128px",lat);
+    //z2 lat at 128px 40.97989806962015
+    /*
+lat = mapProject.pixelsToLatDeg(256,zoom);
+console.log("z2 lat at 256px",lat);
+//lat at 256 66.51326044311188 zoom 2
+lat = mapProject.pixelsToLatDeg(512,zoom);
+console.log("z2 lat at 512px",lat);
+//lat at 512 85.0511287798066
+
+//This is kind of wrong
+var viewportPosition = new Point2d(180 / mercatorViewportPixel,-90/ (mercatorViewportPixel));
+*/
+
+/*
+// to put map center a tile down at zoom level 2 (4 tiles) (map size 512x512)
+let x = mapProject.latDegToPixels(66.51326044311188,zoom);
+var viewportPosition = new Point2d(180 / mercatorViewportPixel,-x/zoom);
+*/
+
+}
 
 
 
