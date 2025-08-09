@@ -1,3 +1,4 @@
+import Control from "./control/Control";
 import CanvasEvent from "./event/CanvasEvent";
 import Resizer from "./event/Resizer";
 import LatLon from "./map/LatLon";
@@ -34,7 +35,7 @@ var viewportMercator: MercatorViewport = new MercatorViewport(
 );
 
 viewportMercator.applyViewportMagnificationForZoom(zoom);
-viewport.viewPortCanvasMagnification.scale(0.9);
+//viewport.viewPortCanvasMagnification.scale(0.9);
 
 let viewportPosition = new Point2d(180 / mercatorViewportPixel, 0);
 var canvasPosition = new Point2d(256, 256);
@@ -83,17 +84,29 @@ webServerInterface.makeAjaxCall("/api/get_route_list?id=AAA", (json: any) => {
 map.mapGrid.load1(zoom, (image) => {
     map.draw();
 });
-
+/*
 function registerInputs() {
     const input: HTMLElement | null = document.getElementById("nameInput");
     const btn: HTMLElement | null = document.getElementById("doRefresh");
     const result: HTMLElement | null = document.getElementById("result");
     const redrawMapGrid: HTMLInputElement | null = document.getElementById("redrawMapGrid")  as HTMLInputElement;
     const viewportCanvasMagnification: HTMLInputElement | null = document.getElementById("viewportCanvasMagnification")  as HTMLInputElement;
-    viewportCanvasMagnification.value = viewport.viewPortCanvasMagnification.x.toString();
-    if (btn && input && result && redrawMapGrid) {
+    const canvasPositionOfViewportCenterX: HTMLInputElement | null = document.getElementById("canvasPositionOfViewportCenterX")  as HTMLInputElement;
+    const canvasPositionOfViewportCenterY: HTMLInputElement | null = document.getElementById("canvasPositionOfViewportCenterY")  as HTMLInputElement;
+     
+    
+    
+    if (btn && input && result && redrawMapGrid && viewportCanvasMagnification && canvasPositionOfViewportCenterX && canvasPositionOfViewportCenterY) {
+        result.textContent = `Hello, ${viewport.toString()}!`;
+        viewportCanvasMagnification.valueAsNumber = viewport.viewPortCanvasMagnification.x;
+        canvasPositionOfViewportCenterX.valueAsNumber = viewport.canvasPositionOfViewportCenter.x;
+        canvasPositionOfViewportCenterY.valueAsNumber = viewport.canvasPositionOfViewportCenter.y;
+
         btn.addEventListener("click", () => {
-            viewport.viewPortCanvasMagnification.set2(parseFloat(viewportCanvasMagnification.value),parseFloat(viewportCanvasMagnification.value));
+            viewport.viewPortCanvasMagnification.set2(viewportCanvasMagnification.valueAsNumber,viewportCanvasMagnification.valueAsNumber);
+            viewport.canvasPositionOfViewportCenter.set2(canvasPositionOfViewportCenterX.valueAsNumber,canvasPositionOfViewportCenterY.valueAsNumber);
+
+            
             map.draw();
             if(redrawMapGrid.value.trim() === "1")
             {
@@ -106,13 +119,15 @@ function registerInputs() {
                 result.textContent = "Please enter a name.";
                 value = "World";
             }
-            result.textContent = `Hello, ${value}!`;
+            result.textContent = `Hello, ${viewport.toString()}!`;
             
         });
     }
 }
 registerInputs();
-
+*/
+let control = new Control(map, viewportMercator, viewport);
+control.setup();
 function doTests() {
     //doTest1();
     //doTest2();
