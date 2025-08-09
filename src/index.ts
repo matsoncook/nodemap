@@ -88,16 +88,23 @@ function registerInputs() {
     const input: HTMLElement | null = document.getElementById("nameInput");
     const btn: HTMLElement | null = document.getElementById("doRefresh");
     const result: HTMLElement | null = document.getElementById("result");
-    if (btn && input && result) {
+    const redrawMapGrid: HTMLInputElement | null = document.getElementById("redrawMapGrid")  as HTMLInputElement;
+    const viewportCanvasMagnification: HTMLInputElement | null = document.getElementById("viewportCanvasMagnification")  as HTMLInputElement;
+    viewportCanvasMagnification.value = viewport.viewPortCanvasMagnification.x.toString();
+    if (btn && input && result && redrawMapGrid) {
         btn.addEventListener("click", () => {
+            viewport.viewPortCanvasMagnification.set2(parseFloat(viewportCanvasMagnification.value),parseFloat(viewportCanvasMagnification.value));
             map.draw();
-            map.mapGrid.load1(zoom, (image) => {
-                map.draw();
-            });
-            const value = input.textContent.trim();
+            if(redrawMapGrid.value.trim() === "1")
+            {
+                map.mapGrid.load1(zoom, (image) => {
+                    map.draw();
+                });
+            }
+            var value = input.textContent.trim();
             if (!value) {
                 result.textContent = "Please enter a name.";
-                return;
+                value = "World";
             }
             result.textContent = `Hello, ${value}!`;
             
