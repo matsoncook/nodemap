@@ -70,9 +70,6 @@ export default class GridCalculator
             boundsArr.push(new TileBounds(this.tileXFrom % this.grid_count, this.tileXTo % this.grid_count, this.tileYFrom, this.tileYTo));
         }
 
-        // console.log(`tileXFrom: ${tileXFrom}, tileXTo: ${tileXTo}`);
-        // console.log(`tileYFrom: ${tileYFrom}, tileYTo: ${tileYTo}`);
-        // console.log(`tm`);
         return boundsArr;
 
         
@@ -121,90 +118,7 @@ export default class GridCalculator
     {
         return `GridCalculator: bounds:${this.viewportBounds}, lonFrom:${this.lonFrom}, lonTo:${this.lonTo}, latFrom:${this.latFrom}, latTo:${this.latTo}, tileXFrom:${this.tileXFrom}, tileXTo:${this.tileXTo}, tileYFrom:${this.tileYFrom}, tileYTo:${this.tileYTo}`;
     }
-/*
-    tests() {
 
-        this.test1();
-        this.test2();
-        this.test3();
-    }
-
-    test1()
-    {
-        let zoom = this.mercatorViewport.zoom;
-        let grid_count = Math.pow(2,zoom);
-        this.viewport.canvasBounds.setFromTo(0,0,1000,500);
-        this.viewport.canvasPositionOfViewportCenter.set2(500,250);
-        //this.viewport.viewPortCanvasMagnification.set2(1,1);
-        this.viewport.viewPortCanvasMagnification.set2(0.5,0.5);
-        this.viewport.calculateViewportCanvasBounds();
-        //this.calculateGrid();
-        console.log("Grid Calculator test: bounds:" + this.viewport.viewportCanvasBounds);
-    }
-    test2()
-    {
-        let zoom = this.mercatorViewport.zoom;
-        let grid_count = Math.pow(2,zoom);
-        this.viewport.canvasBounds.setFromTo(0,0,512,512);
-        this.viewport.canvasPositionOfViewportCenter.set2(256,256);
-        //this.viewport.viewPortCanvasMagnification.set2(1,1);
-        this.viewport.viewPortCanvasMagnification.set2(0.5,0.5);
-        this.viewport.calculateViewportCanvasBounds();
-        //this.calculateGrid();
-        console.log("Grid Calculator test: bounds:" + this.viewport.viewportCanvasBounds);
-        
-
-        let b = this.viewport.viewportCanvasBounds;
-        //this.mercatorViewport.zoo
-        let lonFrom = this.mercatorViewport.viewportToLonDeg(b.x);
-        let lonTo = this.mercatorViewport.viewportToLonDeg(b.x1);
-
-        
-        let latFrom = this.mercatorViewport.viewportToLatDeg(b.y) ;
-        let latTo = this.mercatorViewport.viewportToLatDeg(b.y1) ;
-
-        console.log(`lonFrom ${lonFrom}, ${lonTo}`);
-        console.log(`latFrom ${latFrom}, ${latTo}`);
-    }
-    test3()
-    {
-        let zoom = 2;
-
-        let grid_count = Math.pow(2,zoom);
-        this.viewport.canvasBounds.setFromTo(0,0,512,512);
-        this.viewport.canvasPositionOfViewportCenter.set2(256,256);
-        //this.viewport.viewPortCanvasMagnification.set2(1,1);
-        let zoomLevel = 360.0/512.0;
-        //this.viewport.viewPortCanvasMagnification.set2(0.9,0.9);
-        //this.viewport.viewPortCanvasMagnification.set2(1,1);
-        this.viewport.viewPortCanvasMagnification.set2(zoomLevel*zoomLevel-0.01,zoomLevel*zoomLevel-0.01);
-        this.viewport.calculateViewportCanvasBounds();
-        //this.calculateGrid();
-        console.log("Grid Calculator test: bounds:" + this.viewport.viewportCanvasBounds);
-        
-
-        let b = this.viewport.viewportCanvasBounds;
-        //this.mercatorViewport.zoo
-        let lonFrom = this.mercatorViewport.viewportToLonDeg(b.x);
-        let lonTo = this.mercatorViewport.viewportToLonDeg(b.x1);
-
-        
-        let latFrom = this.mercatorViewport.viewportToLatDeg(b.y) ;
-        let latTo = this.mercatorViewport.viewportToLatDeg(b.y1) ;
-
-        console.log(`lonFrom ${lonFrom}, ${lonTo}`);
-        console.log(`latFrom ${latFrom}, ${latTo}`);
-
-        let tileXFrom = this.lonToTileX(lonFrom,zoom,grid_count,256);
-        let tileXTo = this.lonToTileX(lonTo,zoom,grid_count,256);
-
-        let tileYFrom = this.latToTileY(latFrom, zoom, grid_count, 256) || 0;
-        let tileYTo = this.latToTileY(latTo, zoom, grid_count, 256) || grid_count - 1;
-
-        console.log(`tileX ${tileXFrom}, ${tileXTo}`);
-        console.log(`tileY ${tileYFrom}, ${tileYTo}`);
-    }
-        */
 }
 
 
