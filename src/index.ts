@@ -42,7 +42,7 @@ var canvasPosition = new Point2d(256, 256);
 viewport.setCanvasPositionOfViewportCenter(viewportPosition, canvasPosition);
 
 var map = new OcsMap(canvas, ctx, viewportMercator);
-
+let control :  Control| null= null;
 var resizer = new Resizer(canvas, ctx, viewport, () => {
     map.mapGrid.load1(viewportMercator.zoom, (image) => {
         map.draw();
@@ -51,7 +51,7 @@ var resizer = new Resizer(canvas, ctx, viewport, () => {
     control?.populateInputs();
 });
 
-let control :  Control| null= new Control(map, viewportMercator, viewport,resizer);
+control = new Control(map, viewportMercator, viewport,resizer);
 control?.setup();
 
 var canvasEvent = new CanvasEvent(canvas, viewportMercator);
