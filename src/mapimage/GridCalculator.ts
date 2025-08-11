@@ -116,7 +116,7 @@ export default class GridCalculator
     }
     toString(): string
     {
-        return `GridCalculator: bounds:${this.viewportBounds}, lonFrom:${this.lonFrom}, lonTo:${this.lonTo}, latFrom:${this.latFrom}, latTo:${this.latTo}, tileXFrom:${this.tileXFrom}, tileXTo:${this.tileXTo}, tileYFrom:${this.tileYFrom}, tileYTo:${this.tileYTo}`;
+        return `GridCalculator: grid_count: ${this.grid_count}, bounds:${this.viewportBounds}, lonFrom:${this.lonFrom}, lonTo:${this.lonTo}, latFrom:${this.latFrom}, latTo:${this.latTo}, tileXFrom:${this.tileXFrom}, tileXTo:${this.tileXTo}, tileYFrom:${this.tileYFrom}, tileYTo:${this.tileYTo}`;
     }
 
 }

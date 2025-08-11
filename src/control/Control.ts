@@ -65,6 +65,26 @@ export default class Control {
     "doCanvasSizeChange",
   ) as HTMLButtonElement;
 
+  /*
+  <input id="pixelToLat_pixel" type="number" value="512"  />
+    </label>
+    <label>Lat:
+  <input id="pixelToLat_lat" type="number" value="512"  />
+      </label>
+  <button id="pixelToLat">pixelToLat</button>
+  */
+
+  pixelToLat_pixel: HTMLInputElement = document.getElementById(
+    "pixelToLat_pixel",
+  ) as HTMLInputElement;
+  pixelToLat_lat: HTMLInputElement = document.getElementById(
+    "pixelToLat_lat",
+  ) as HTMLInputElement;
+  pixelToLat: HTMLButtonElement = document.getElementById(
+    "pixelToLat",
+  ) as HTMLButtonElement;
+
+
   constructor(
     private map: OcsMap,
     private mercatorViewport: MercatorViewport,
@@ -86,6 +106,11 @@ export default class Control {
       "click",
       this.doCenterLatLonButtonEvent,
     );
+
+    this.pixelToLat.addEventListener(
+      "click",
+      this.pixelToLatButtonEvent,
+    )
   }
 
   refreshButtonEvent = (event: Event) => {
@@ -125,6 +150,12 @@ export default class Control {
     this.populateInputs();
     this.populateDescription();
   };
+  pixelToLatButtonEvent = (event: Event) => {
+
+      let lat = this.mercatorViewport.mercatorWeb.pixelsToLatDeg(this.pixelToLat_pixel.valueAsNumber, this.mercatorViewport.zoom);
+      this.pixelToLat_lat.valueAsNumber = lat;
+    };
+  
 
   populateDescription() {
     let a = `Zoom: ${this.mercatorViewport.zoom}, ${this.viewport.toString()}`;

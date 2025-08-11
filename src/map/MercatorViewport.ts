@@ -23,7 +23,7 @@ export default class MercatorViewport
 
     viewportToLatDeg(viewportY : number) :number
     {
-        let px = viewportY * this.zoom;//; * 360.0/512.0;
+        let px = viewportY * Math.pow(2,this.zoom-1);// * 512.0/360.0;//; * 360.0/512.0;
         let lat = this._mercatorWeb.pixelsToLatDeg(px,this._zoom)
         return lat;
     }
