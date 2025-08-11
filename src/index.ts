@@ -97,5 +97,11 @@ map.mapGrid.load1(zoom, (image) => {
     map.draw();
 });
 
+/*
+zoom 2 -256 but was -104 ratio 2.4615384615384615
+zoom 3 -768 but was -464 ratio 1.6578947368421053
 
+zoom 4 not quite spot on -1785 but was -1184 ratio 1.5161290322580645
+zoom 5  -3571 but was -2624 ratio 1.5080645161290323
+*/
 

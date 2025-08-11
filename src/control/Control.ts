@@ -134,7 +134,7 @@ export default class Control {
   };
   doCenterLatLonButtonEvent = (event: Event) => {
 
-    let viewportPosition = new Point2d(this.doCenterLon.valueAsNumber, this.doCenterLat.valueAsNumber);
+    let viewportPosition = new Point2d(this.doCenterLon.valueAsNumber * (512/360), this.doCenterLat.valueAsNumber);
     let canvasPosition = new Point2d(this.resizer.width/2, this.resizer.height/2);
     this.viewport.setCanvasPositionOfViewportCenter(viewportPosition,canvasPosition);
     
