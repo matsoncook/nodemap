@@ -9,14 +9,18 @@
 
 
     <div>
-        <label>
-          Your name:
-          <input id="nameInput" type="text" placeholder="Ada Lovelace" />
-        </label>
-        <label>
-          Redraw Map Grid:
-          <input id="redrawMapGrid" type="text" placeholder="Redraw Map Grid" />
-        </label>
+      <label>
+        Your name:
+        <input id="nameInput" type="text" placeholder="Ada Lovelace" />
+      </label>
+      <label>
+        Redraw Map Grid:
+        <input id="redrawMapGrid" type="text" placeholder="Redraw Map Grid" />
+      </label>
+      <label>
+        zoom:
+        <input id="zoom" type="number" value="1" placeholder="zoom" />
+      </label>
       <label>
         viewportCanvasMagnification:
         <input id="viewportCanvasMagnification" type="number" value="1" placeholder="viewportCanvasMagnification" />
@@ -30,7 +34,26 @@
         <input id="canvasPositionOfViewportCenterY" type="number" value="1" placeholder="canvasPositionOfViewportCenterY" />
       </label>
           <button id="doRefresh">Refresh</button>
+      <div  style="margin-top:1rem;">
+        <label>
+        <input id="doCenterLat" type="number" value="0"  />
+          </label>
+          <label>
+        <input id="doCenterLon" type="number" value="180"  />
+            </label>
+        <button id="doCenterLatLon">doCenterLatLon</button>
+      </div>
+      <div  style="margin-top:1rem;">
+        <label>
+        <input id="doCanvasSizeChangeX" type="number" value="512"  />
+          </label>
+          <label>
+        <input id="doCanvasSizeChangeY" type="number" value="512"  />
+            </label>
+        <button id="doCanvasSizeChange">doCanvasSizeChange</button>
+      </div>
          <div id="result" style="margin-top:1rem;"></div>
+      <div id="gridCalculatorResult" style="margin-top:1rem;"></div>
     </div>
     <script src="dist/bundle.js"></script> <!-- Compiled JS -->
 </body>

@@ -43,9 +43,16 @@ viewport.setCanvasPositionOfViewportCenter(viewportPosition, canvasPosition);
 
 var map = new OcsMap(canvas, ctx, viewportMercator);
 
-var resizer1 = new Resizer(canvas, ctx, viewport, () => {
+var resizer = new Resizer(canvas, ctx, viewport, () => {
+    map.mapGrid.load1(viewportMercator.zoom, (image) => {
+        map.draw();
+    });
     map.draw();
+    control?.populateInputs();
 });
+
+let control :  Control| null= new Control(map, viewportMercator, viewport,resizer);
+control?.setup();
 
 var canvasEvent = new CanvasEvent(canvas, viewportMercator);
 canvasEvent.addWheelEvent(() => {
@@ -53,9 +60,14 @@ canvasEvent.addWheelEvent(() => {
         map.draw();
     });
     map.draw();
+    control?.populateInputs();
 });
 canvasEvent.addDraggingEvent(() => {
+    map.mapGrid.load1(viewportMercator.zoom, (image) => {
+        map.draw();
+    });
     map.draw();
+    control?.populateInputs();
 });
 
 var webServerInterface: WebServerInterface = new WebServerInterface();
@@ -126,8 +138,7 @@ function registerInputs() {
 }
 registerInputs();
 */
-let control = new Control(map, viewportMercator, viewport);
-control.setup();
+
 function doTests() {
     //doTest1();
     //doTest2();

@@ -10,9 +10,23 @@ export default class GridCalculator
     viewport : Viewport2d;
     //private _zoom: number = 1;
     viewportBounds : Bounds2d = new Bounds2d();
+
+
+    lonFrom = 0;
+    lonTo = 0;
+
+    grid_count = 0;
+    latFrom = 0 ;
+    latTo = 0 ;
+
+    tileXFrom = 0;
+    tileXTo = 0;
+
+    tileYFrom =  0;
+    tileYTo = 0; 
     
 
-
+    boundsArr :  TileBounds[] = [];
     constructor(private mercatorViewport : MercatorViewport)
     {
         this.mapProject = mercatorViewport.mercatorWeb;
@@ -29,30 +43,31 @@ export default class GridCalculator
 
         this.viewportBounds = b;
 
-        let lonFrom = this.mercatorViewport.viewportToLonDeg(b.x);
-        let lonTo = this.mercatorViewport.viewportToLonDeg(b.x1);
+        this.lonFrom = this.mercatorViewport.viewportToLonDeg(b.x);
+        this.lonTo = this.mercatorViewport.viewportToLonDeg(b.x1);
 
-        let grid_count = Math.pow(2,zoom);
-        let latFrom = this.mercatorViewport.viewportToLatDeg(b.y) ;
-        let latTo = this.mercatorViewport.viewportToLatDeg(b.y1) ;
+        this.grid_count = Math.pow(2,zoom);
+        this.latFrom = this.mercatorViewport.viewportToLatDeg(b.y) ;
+        this.latTo = this.mercatorViewport.viewportToLatDeg(b.y1) ;
         
         
 
-        let tileXFrom = this.lonToTileX(lonFrom,zoom,grid_count,256);
-        let tileXTo = this.lonToTileX(lonTo,zoom,grid_count,256);
+        this.tileXFrom = this.lonToTileX(this.lonFrom,zoom,this.grid_count,256);
+        this.tileXTo = this.lonToTileX(this.lonTo,zoom,this.grid_count,256);
         
-        let tileYFrom = this.latToTileY(latFrom,zoom,grid_count,256) || 0;
-        let tileYTo = this.latToTileY(latTo,zoom,grid_count,256) || grid_count -1; 
+        this.tileYFrom = this.latToTileY(this.latFrom,zoom,this.grid_count,256) || 0;
+        this.tileYTo = this.latToTileY(this.latTo,zoom,this.grid_count,256) || this.grid_count -1; 
 
-        let boundsArr :  TileBounds[] = [];
+        this.boundsArr = [];
+        let boundsArr :  TileBounds[] = this.boundsArr;
 
-        if(tileXFrom % grid_count > tileXTo % grid_count)
+        if(this.tileXFrom % this.grid_count > this.tileXTo % this.grid_count)
         {
-            boundsArr.push(new TileBounds(0, tileXTo % grid_count, tileYFrom, tileYTo));
-            boundsArr.push(new TileBounds(tileXFrom % grid_count, grid_count -1, tileYFrom, tileYTo))
+            boundsArr.push(new TileBounds(0, this.tileXTo % this.grid_count, this.tileYFrom, this.tileYTo));
+            boundsArr.push(new TileBounds(this.tileXFrom % this.grid_count, this.grid_count -1, this.tileYFrom, this.tileYTo))
         }
         else{
-            boundsArr.push(new TileBounds(tileXFrom % grid_count, tileXTo % grid_count, tileYFrom, tileYTo));
+            boundsArr.push(new TileBounds(this.tileXFrom % this.grid_count, this.tileXTo % this.grid_count, this.tileYFrom, this.tileYTo));
         }
 
         // console.log(`tileXFrom: ${tileXFrom}, tileXTo: ${tileXTo}`);
@@ -102,7 +117,10 @@ export default class GridCalculator
 
         return { x_count, y_count };
     }
-
+    toString(): string
+    {
+        return `GridCalculator: bounds:${this.viewportBounds}, lonFrom:${this.lonFrom}, lonTo:${this.lonTo}, latFrom:${this.latFrom}, latTo:${this.latTo}, tileXFrom:${this.tileXFrom}, tileXTo:${this.tileXTo}, tileYFrom:${this.tileYFrom}, tileYTo:${this.tileYTo}`;
+    }
 /*
     tests() {
 

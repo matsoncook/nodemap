@@ -1,58 +1,89 @@
+import Resizer from "../event/Resizer";
 import OcsMap from "../map/map";
 import MercatorViewport from "../map/MercatorViewport";
 import { Viewport2d } from "../viewport/viewport2d";
 
 export default class Control {
-  input: HTMLElement | null = document.getElementById("nameInput");
-  btn: HTMLElement | null = document.getElementById("doRefresh");
-  result: HTMLElement | null = document.getElementById("result");
-  redrawMapGrid: HTMLInputElement | null = document.getElementById(
+  input: HTMLElement = document.getElementById("nameInput") as HTMLElement;
+  btn: HTMLElement = document.getElementById("doRefresh") as HTMLElement;
+  result: HTMLInputElement  = document.getElementById("result") as HTMLInputElement;
+  gridCalculatorResult: HTMLDivElement  = document.getElementById("gridCalculatorResult") as HTMLDivElement;
+  redrawMapGrid: HTMLInputElement = document.getElementById(
     "redrawMapGrid",
   ) as HTMLInputElement;
-  viewportCanvasMagnification: HTMLInputElement | null =
+  zoom: HTMLInputElement  = document.getElementById(
+    "zoom"
+  ) as HTMLInputElement;
+  viewportCanvasMagnification: HTMLInputElement=
     document.getElementById("viewportCanvasMagnification") as HTMLInputElement;
-  canvasPositionOfViewportCenterX: HTMLInputElement | null =
+  canvasPositionOfViewportCenterX: HTMLInputElement =
     document.getElementById(
       "canvasPositionOfViewportCenterX",
     ) as HTMLInputElement;
-  canvasPositionOfViewportCenterY: HTMLInputElement | null =
+  canvasPositionOfViewportCenterY: HTMLInputElement =
     document.getElementById(
       "canvasPositionOfViewportCenterY",
     ) as HTMLInputElement;
+
+  /*
+<input id="doCenterLat" type="number" value="0"  />
+  </label>
+  <label>
+<input id="doCenterLon" type="number" value="180"  />
+    </label>
+<button id="doCenterLatLon">doCenterLatLon</button>
+
+  
+  */
+
+  doCenterLat: HTMLInputElement =
+    document.getElementById(
+      "doCenterLat",
+    ) as HTMLInputElement;
+  doCenterLon: HTMLInputElement =
+    document.getElementById(
+      "doCenterLon",
+    ) as HTMLInputElement;
+  doCenterLatLon: HTMLButtonElement = document.getElementById("doCenterLatLon") as HTMLButtonElement;
+  /*
+  <input id="doCanvasSizeChangeX" type="number" value="512"  />
+    </label>
+    <label>
+  <input id="doCanvasSizeChangeY" type="number" value="512"  />
+      </label>
+  <button id="doCanvasSizeChange">doCanvasSizeChange</button>
+  */
+  doCanvasSizeChangeX: HTMLInputElement =
+    document.getElementById(
+      "doCanvasSizeChangeX",
+    ) as HTMLInputElement;
+  doCanvasSizeChangeY: HTMLInputElement =
+    document.getElementById(
+      "doCanvasSizeChangeY",
+    ) as HTMLInputElement;
+  doCanvasSizeChange: HTMLButtonElement = document.getElementById("doCanvasSizeChange") as HTMLButtonElement;
+  
   constructor(
     private map: OcsMap,
     private mercatorViewport: MercatorViewport,
     private viewport: Viewport2d,
+    private resizer: Resizer
   ) {
     //this.setup();
   }
 
   setup() {
-    if (
-      this.btn &&
-      this.input &&
-      this.result &&
-      this.redrawMapGrid &&
-      this.viewportCanvasMagnification &&
-      this.canvasPositionOfViewportCenterX &&
-      this.canvasPositionOfViewportCenterY
-    ) {
+
       this.populateInputs();
 
-      this.btn.addEventListener("click", this.buttonEvent);
-    }
+      this.btn.addEventListener("click", this.refreshButtonEvent);
+    this.doCanvasSizeChange.addEventListener("click", this.doCanvasSizeChangeButtonEvent);
+    this.doCenterLatLon.addEventListener("click", this.doCenterLatLonButtonEvent);
+
   }
 
-  buttonEvent() {
-    if (
-      this.btn &&
-      this.input &&
-      this.result &&
-      this.redrawMapGrid &&
-      this.viewportCanvasMagnification &&
-      this.canvasPositionOfViewportCenterX &&
-      this.canvasPositionOfViewportCenterY
-    ) {
+  refreshButtonEvent= (event : Event)=> {
+   
       this.populateMapParameters();
 
       this.map.draw();
@@ -61,25 +92,46 @@ export default class Control {
           this.map.draw();
         });
       }
-      var value = this.input.textContent.trim();
-      if (!value) {
-        this.result.textContent = "Please enter a name.";
-        value = "World";
+      this.populateDescription();
+      
+    
+  }
+  doCanvasSizeChangeButtonEvent= (event : Event)=> {
+    this.populateMapParameters();
+    
+    this.resizer.width = this.doCanvasSizeChangeX.valueAsNumber;
+    this.resizer.height = this.doCanvasSizeChangeY.valueAsNumber;
+    this.resizer.handleResize();
+
+    this.populateDescription();
+
+  }
+  doCenterLatLonButtonEvent= (event : Event)=> {
+
+      this.populateMapParameters();
+
+      this.map.draw();
+      if (this.redrawMapGrid.value.trim() === "1") {
+        this.map.mapGrid.load1(this.mercatorViewport.zoom, (image) => {
+          this.map.draw();
+        });
       }
-      this.result.textContent = `Hello, ${this.viewport.toString()}!`;
-    }
+      this.populateDescription();
+
+
+  }
+
+  populateDescription()
+  {
+    let a =  `Zoom: ${this.mercatorViewport.zoom}, ${this.viewport.toString()}`;
+    let b = this.map.mapGrid.gridCalculator.toString();
+    
+      this.result.textContent = a ; 
+    this.gridCalculatorResult.textContent = b
   }
 
   populateInputs() {
-    if (
-      this.btn &&
-      this.input &&
-      this.result &&
-      this.redrawMapGrid &&
-      this.viewportCanvasMagnification &&
-      this.canvasPositionOfViewportCenterX &&
-      this.canvasPositionOfViewportCenterY
-    ) {
+    
       this.result.textContent = `Viewport, ${this.viewport.toString()}!`;
       this.viewportCanvasMagnification.valueAsNumber =
         this.viewport.viewPortCanvasMagnification.x;
@@ -87,19 +139,14 @@ export default class Control {
         this.viewport.canvasPositionOfViewportCenter.x;
       this.canvasPositionOfViewportCenterY.valueAsNumber =
         this.viewport.canvasPositionOfViewportCenter.y;
-    }
+      this.zoom.valueAsNumber = this.mercatorViewport.zoom;
+
+      this.populateDescription();
+    
   }
 
   populateMapParameters() {
-    if (
-      this.btn &&
-      this.input &&
-      this.result &&
-      this.redrawMapGrid &&
-      this.viewportCanvasMagnification &&
-      this.canvasPositionOfViewportCenterX &&
-      this.canvasPositionOfViewportCenterY
-    ) {
+
       this.viewport.viewPortCanvasMagnification.set2(
         this.viewportCanvasMagnification.valueAsNumber,
         this.viewportCanvasMagnification.valueAsNumber,
@@ -108,6 +155,7 @@ export default class Control {
         this.canvasPositionOfViewportCenterX.valueAsNumber,
         this.canvasPositionOfViewportCenterY.valueAsNumber,
       );
-    }
+      this.mercatorViewport.zoom = this.zoom.valueAsNumber;
+    
   }
 }
