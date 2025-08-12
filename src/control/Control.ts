@@ -84,6 +84,9 @@ export default class Control {
     "pixelToLat",
   ) as HTMLButtonElement;
 
+  controlsStuff = document.getElementById('controlStuff') as HTMLDivElement;
+  toggleBtn = document.getElementById('toggleBtn') as HTMLButtonElement;
+
 
   constructor(
     private map: OcsMap,
@@ -111,6 +114,10 @@ export default class Control {
       "click",
       this.pixelToLatButtonEvent,
     )
+    this.toggleBtn.addEventListener('click', () => {
+      const hidden = this.controlsStuff.classList.toggle('hidden');
+      this.toggleBtn.textContent = hidden ? 'Show Controls' : 'Hide Controls';
+    });
   }
 
   refreshButtonEvent = (event: Event) => {
@@ -133,12 +140,16 @@ export default class Control {
     this.populateDescription();
   };
   doCenterLatLonButtonEvent = (event: Event) => {
-
-    let viewportPosition = new Point2d(this.doCenterLon.valueAsNumber * (512/360), this.doCenterLat.valueAsNumber);
-    let canvasPosition = new Point2d(this.resizer.width/2, this.resizer.height/2);
-    this.viewport.setCanvasPositionOfViewportCenter(viewportPosition,canvasPosition);
+    // let posY = this.mercatorViewport.mercatorWeb.latDegToPixels(this.doCenterLat.valueAsNumber,this.mercatorViewport.zoom);
+    // posY = posY / Math.pow(2,this.mercatorViewport.zoom-1);
+    // //let lat = this.doCenterLat.valueAsNumber;
+    // let viewportPosition = new Point2d(this.doCenterLon.valueAsNumber * (512/360), posY);
+    // let canvasPosition = new Point2d(this.resizer.width/2, this.resizer.height/2);
+    // this.viewport.setCanvasPositionOfViewportCenter(viewportPosition,canvasPosition);
     
-
+    this.mercatorViewport.doCenterLatLon(this.doCenterLon.valueAsNumber,this.doCenterLat.valueAsNumber);
+    
+    
     //this.populateMapParameters();
 
     this.map.draw();

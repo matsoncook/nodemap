@@ -31,5 +31,10 @@ export default class TileBounds
         this._x0 = value;
     }
 
+    toString() : string
+    {
+        return `Tile bounds x: ${this.x0} ${this.x1} y: ${this.y0} ${this.y1}`;
+    }
+
 
 } 

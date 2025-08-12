@@ -5,6 +5,7 @@ import LatLon from "./LatLon";
 
 export default class MercatorViewport
 {
+   
     
     zoomMagnificationMultiplier  = 360.0/512.0;
     
@@ -66,6 +67,44 @@ export default class MercatorViewport
         point.x = x_f;
         point.y = y_f;
     }
+
+    doCenterLatLon(centerLon : number, centerLat : number){
+
+        //should the zoom be actually canvas-viewport magnification
+
+        let posY = this.mercatorWeb.latDegToPixels(centerLat,this.zoom);
+        posY = posY / Math.pow(2,this.zoom-1);
+        //let lat = this.doCenterLat.valueAsNumber;
+        let viewportPosition = new Point2d(centerLon * (512/360), posY);
+        let canvasPosition = new Point2d(this.viewport.canvasBounds.sizeX /2, this.viewport.canvasBounds.sizeY /2);
+        this.viewport.setCanvasPositionOfViewportCenter(viewportPosition,canvasPosition);
+    }
+
+    doZoomChange(zoomChange: number,offsetX: number,offsetY: number) {
+        //This setup the viewport magic
+        let previousViewPortPosition = new Point2d()
+        let currentCanvasPosition = new Point2d(offsetX,offsetY);
+        this.viewport.canvasToViewPort(currentCanvasPosition,previousViewPortPosition);
+        //---
+        
+        // var dir = 1;
+        // if (delta < 0) {
+        //     this.viewport.viewPortCanvasMagnification.scale(1/(dir + 0.2));
+        // } else {
+        //     this.viewport.viewPortCanvasMagnification.scale((dir + 0.2));       
+        // }
+        //if (delta < 0) {
+            this.zoom += zoomChange;
+        // }
+        // else{
+        //     this.zoom -= 1;
+        // }
+
+        this.applyViewportMagnificationForZoom(this.zoom);
+        
+        //This does the viewport magic
+        this.viewport.setCanvasPositionOfViewportCenter(previousViewPortPosition,currentCanvasPosition);
+}
 
     // optimalZoomForMagnification(viewportMagnification: number): number {
     //     const metersPerPixel = 1.0 / viewportMagnification;

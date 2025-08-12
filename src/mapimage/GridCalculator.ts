@@ -58,6 +58,11 @@ export default class GridCalculator
         this.tileYFrom = this.latToTileY(this.latFrom,zoom,this.grid_count,256) || 0;
         this.tileYTo = this.latToTileY(this.latTo,zoom,this.grid_count,256) || this.grid_count -1; 
 
+        // if(this.tileXFrom < 0  ) this.tileXFrom = 0;
+        // if(this.tileXTo > this.grid_count -1  ) this.tileXTo = this.grid_count -1;
+        // if(this.tileYFrom < 0  ) this.tileYFrom = 0;
+        // if(this.tileYTo > this.grid_count -1  ) this.tileYTo = this.grid_count -1;
+
         this.boundsArr = [];
         let boundsArr :  TileBounds[] = this.boundsArr;
 
@@ -116,7 +121,13 @@ export default class GridCalculator
     }
     toString(): string
     {
-        return `GridCalculator: grid_count: ${this.grid_count}, bounds:${this.viewportBounds}, lonFrom:${this.lonFrom}, lonTo:${this.lonTo}, latFrom:${this.latFrom}, latTo:${this.latTo}, tileXFrom:${this.tileXFrom}, tileXTo:${this.tileXTo}, tileYFrom:${this.tileYFrom}, tileYTo:${this.tileYTo}`;
+        let a = `GridCalculator: grid_count: ${this.grid_count}, bounds:${this.viewportBounds}, lonFrom:${this.lonFrom}, lonTo:${this.lonTo}, latFrom:${this.latFrom}, latTo:${this.latTo}, tileXFrom:${this.tileXFrom}, tileXTo:${this.tileXTo}, tileYFrom:${this.tileYFrom}, tileYTo:${this.tileYTo}`;
+        for(var bounds of this.boundsArr)
+        {
+            a += " " + bounds.toString();
+        }
+        
+        return a;
     }
 
 }
