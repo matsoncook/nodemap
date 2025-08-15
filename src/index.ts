@@ -72,7 +72,7 @@ canvasEvent.addDraggingEvent(() => {
 
 var webServerInterface: WebServerInterface = new WebServerInterface();
 
-webServerInterface.makeAjaxCall("/map_static/go_fixes.json", onSuccess);
+webServerInterface.makeAjaxCall("/map_data/fix.json", onSuccess);
 
 function onSuccess(json: any) {
     map.fixes.fixList = json;
